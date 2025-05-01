@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from "react";
-import { Bot, EditIcon } from "lucide-react";
+import { Bot, EditIcon, ArchiveIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,7 +22,15 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { threads, newThread } = useThreads();
+  const { threads, newThread, deleteThread } = useThreads();
+
+  const handleArchive = async (threadId: string) => {
+    try {
+      await deleteThread(threadId);
+    } catch (error) {
+      console.error('Failed to archive thread:', error);
+    }
+  };
 
   return (
     <Sidebar {...props}>
@@ -61,9 +69,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuSub className="mx-0 px-0 border-0 gap-1">
                   {threads.map((thread: Threads[0]) => (
                     <SidebarMenuSubItem key={thread.id}>
-                      <SidebarMenuSubButton asChild className="block w-full whitespace-normal break-words py-2 px-2 h-auto">
-                        <Link href={`/chat/${thread.id}`}>{thread.title}</Link>
-                      </SidebarMenuSubButton>
+                      <div className="flex items-center justify-between w-full">
+                        <SidebarMenuSubButton asChild className="flex-1 block whitespace-normal break-words py-2 px-2 h-auto">
+                          <Link href={`/chat/${thread.id}`}>{thread.title}</Link>
+                        </SidebarMenuSubButton>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 mr-2 hover:bg-transparent cursor-pointer hover:text-blue-600"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleArchive(thread.id);
+                          }}
+                        >
+                          <ArchiveIcon className="h-4 w-4" />
+                          <span className="sr-only">Archive thread</span>
+                        </Button>
+                      </div>
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>
@@ -74,5 +96,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

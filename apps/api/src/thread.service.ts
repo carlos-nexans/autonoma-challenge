@@ -31,6 +31,13 @@ then use a title that reflects the intention of the user.
 
 const defaultTitle = 'New Conversation';
 
+export type AddMessageActions = 'changed_title' | 'added_message'
+
+export type AddMessageToThreadOutput = {
+    actions:  AddMessageActions[]
+    thread: Thread;
+}
+
 @Injectable()
 export class ThreadService {
     constructor(
@@ -101,7 +108,7 @@ export class ThreadService {
     }
 
     // Add message to a thread
-    async addMessage(threadId: string, message: Message): Promise<void> {
+    async addMessage(threadId: string, message: Message): Promise<AddMessageToThreadOutput> {
         const thread = await this.threadRepository.findOne({ where: { id: threadId } });
         if (!thread) {
             throw new NotFoundException('Thread not found');
@@ -113,12 +120,22 @@ export class ThreadService {
             role: message.role,
             content: message.content,
         });
+
         await this.messageRepository.save(messageEntity);
 
         if (thread.title === defaultTitle) {
             const messages = await this.messageRepository.find({ where: { threadId } });
             thread.title = await this.generateTitle(messages);
             await this.threadRepository.save(thread);
+            return {
+                actions: ['added_message', 'changed_title'],
+                thread,
+            }
+        }
+
+        return {
+            actions: ['added_message'],
+            thread,
         }
     }
 
@@ -147,7 +164,12 @@ export class ThreadService {
         return thread;
     }
 
+    // TODO: add soft delete instead of hard delete!
     async archiveThread(threadId: string): Promise<void> {
+        // First delete all associated messages
+        await this.messageRepository.delete({ threadId });
+        
+        // Then delete the thread
         const result = await this.threadRepository.delete(threadId);
         if (result.affected === 0) {
             throw new NotFoundException('Thread not found');

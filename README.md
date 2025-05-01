@@ -1,120 +1,87 @@
-# Turborepo starter
+# Assistant API - Monorepo Project
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+This is a monorepo project built with Turborepo, containing a NestJS API backend and a Next.js frontend application. The project uses pnpm as the package manager and implements a modern TypeScript-based architecture.
 
-## Using this example
+## Project Structure
 
-Run the following command:
-
-```bash
-npx create-turbo@latest -e with-nestjs
+```plaintext
+.
+├── apps
+│   ├── api                       # NestJS backend application
+│   └── web                       # Next.js frontend application
+└── packages
+    ├── @repo/api                 # Shared API types and interfaces
+    ├── @repo/eslint-config       # ESLint configurations
+    ├── @repo/jest-config         # Jest test configurations
+    ├── @repo/typescript-config   # TypeScript configurations
+    └── @repo/ui                  # Shared UI components
 ```
 
-## What's inside?
+### Key Features
 
-This Turborepo includes the following packages/apps:
+- Monorepo Architecture : Uses Turborepo for efficient monorepo management
+- Type Safety : 100% TypeScript implementation across all packages and applications
+- Cross-cutting Concerns : Shared types and interfaces located in packages/api/index
+- Modern Stack :
+  - Backend: NestJS with SQLite database
+  - Frontend: Next.js with modern features
+  - Shared configurations for consistent development experience
 
-### Apps and Packages
+## Getting Started
 
-    .
-    ├── apps
-    │   ├── api                       # NestJS app (https://nestjs.com).
-    │   └── web                       # Next.js app (https://nextjs.org).
-    └── packages
-        ├── @repo/api                 # Shared `NestJS` resources.
-        ├── @repo/eslint-config       # `eslint` configurations (includes `prettier`)
-        ├── @repo/jest-config         # `jest` configurations
-        ├── @repo/typescript-config   # `tsconfig.json`s used throughout the monorepo
-        └── @repo/ui                  # Shareable stub React component library.
-
-Each package and application are 100% [TypeScript](https://www.typescriptlang.org/) safe.
-
-### Utilities
-
-This `Turborepo` has some additional tools already set for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type-safety
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Jest](https://prettier.io) & [Playwright](https://playwright.dev/) for testing
-
-### Commands
-
-This `Turborepo` already configured useful commands for all your apps and packages.
-
-#### Build
+1. Install dependencies:
 
 ```bash
-# Will build all the app & packages with the supported `build` script.
-pnpm run build
-
-# ℹ️ If you plan to only build apps individually,
-# Please make sure you've built the packages first.
+pnpm install
 ```
 
-#### Develop
+2. Start development servers:
 
 ```bash
-# Will run the development server for all the app & packages with the supported `dev` script.
 pnpm run dev
 ```
 
-#### test
+This will start both the API and web applications in development mode.
 
-```bash
-# Will launch a test suites for all the app & packages with the supported `test` script.
-pnpm run test
+## Applications
 
-# You can launch e2e testes with `test:e2e`
-pnpm run test:e2e
+### API (NestJS)
+- Located in apps/api
+- Runs on port 3000
+- Features:
+  - SQLite database integration
+  - OpenAI integration
+  - Thread and message management
+  - RESTful API endpoints
+### Web (Next.js)
+- Located in apps/web
+- Modern Next.js application with:
+  - Geist font optimization
+  - Auto-updating development environment
+  - Built-in API routes
 
-# See `@repo/jest-config` to customize the behavior.
-```
+## Deployment
 
-#### Lint
+The API is configured for deployment on Fly.io with the following specifications:
 
-```bash
-# Will lint all the app & packages with the supported `lint` script.
-# See `@repo/eslint-config` to customize the behavior.
-pnpm run lint
-```
+- 2GB memory allocation
+- Shared CPU
+- Persistent storage mounted at /mnt/assistant_data
+- Automatic HTTPS enforcement
+- Auto-scaling capabilities
+The web application can be deployed on Vercel for optimal performance and integration.
 
-#### Format
+## Technical Details
 
-```bash
-# Will format all the supported `.ts,.js,json,.tsx,.jsx` files.
-# See `@repo/eslint-config/prettier-base.js` to customize the behavior.
-pnpm format
-```
+### Cross-cutting Concerns
+The shared types and interfaces are centralized in packages/api/index , providing:
 
-### Remote Caching
+- Type consistency across applications
+- Shared domain models
+- Common utility types
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```bash
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```bash
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### Configuration
+- ESLint and Prettier configured for consistent code style
+- Jest configured for testing
+- TypeScript configurations shared across packages
+- Docker configuration for production deployment

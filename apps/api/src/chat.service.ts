@@ -16,12 +16,10 @@ export class ChatService {
     constructor(private readonly openai: OpenAI, private readonly threadService: ThreadService) {}
 
     async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
-        console.log(input.model)
         let threadId = input.thread;
 
         // Create new thread if none is provided
         if (!threadId) {
-            console.log('creating new thread it was', threadId);
             const thread = await this.threadService.createThread({ messages: input.messages });
             threadId = thread.id;
 
@@ -64,9 +62,16 @@ export class ChatService {
             }
         }
 
-        await this.threadService.addMessage(threadId, {
+        const result = await this.threadService.addMessage(threadId, {
             role: 'assistant',
             content: buffer,
         });
+
+        if (result.actions.includes('changed_title')) {
+            onEvent({
+                type: 'thread',
+                content: threadId,
+            });
+        }
     }
 }

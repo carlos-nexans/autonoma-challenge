@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Response } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import type { Message, AddMessageInput, StreamingEvent, Threads, Thread } from "@repo/api"
 import { ServerResponse } from 'http';
@@ -6,7 +6,7 @@ import { ThreadService } from './thread.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly chatService: ChatService, private readonly threadService: ThreadService) {}
+  constructor(private readonly chatService: ChatService, private readonly threadService: ThreadService) { }
 
   @Get("/health")
   getHealth(): string {
@@ -44,5 +44,10 @@ export class AppController {
   @Post("/threads")
   async createThread(): Promise<Thread> {
     return this.threadService.createThread({ messages: [] })
+  }
+
+  @Delete("/threads/:id")
+  async deleteThread(@Param('id') id: string): Promise<void> {
+    return this.threadService.archiveThread(id);
   }
 }
