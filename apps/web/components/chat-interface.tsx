@@ -21,7 +21,7 @@ import { useEffect, useRef } from "react"
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/github.css'; // o cualquier tema
-import 'github-markdown-css'
+import 'github-markdown-css/github-markdown-light.css'
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function ChatInterface({ thread, history }: { thread?: string, history?: Message[] }) {
