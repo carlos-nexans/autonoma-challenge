@@ -1,4 +1,10 @@
-import { Toaster } from "@/components/ui/sonner"
+import { AppSidebar } from "@/components/app-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider
+} from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+import { QueryProvider } from '@/components/query-provider';
 import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
@@ -28,7 +34,14 @@ export default function RootLayout({
         className="font-sans antialiased"
         id="root"
       >
-        {children}
+        <QueryProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
+        </QueryProvider>
         <Toaster />
       </body>
     </html>

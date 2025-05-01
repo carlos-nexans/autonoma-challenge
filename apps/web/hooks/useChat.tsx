@@ -1,6 +1,7 @@
 import { toast } from "sonner"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Message, StreamingEvent } from "@repo/api";
+import { useThreads } from "./useThreads";
 
 export default function useChat() {
     const [messages, setMessages] = useState<Message[]>([]);
