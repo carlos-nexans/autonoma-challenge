@@ -12,6 +12,7 @@ primary_region = 'eze'
 [env]
   NODE_ENV = 'production'
   PORT = '3000'
+  DATABASE_URL = "/mnt/assistant_data/db.sqlite"
 
 [http_service]
   internal_port = 3000
@@ -19,9 +20,13 @@ primary_region = 'eze'
   auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 1
-  processes = ['app']
 
 [[vm]]
   memory = '2gb'
   cpu_kind = 'shared'
   cpus = 1
+
+[mounts]
+  source = "assistant_data"
+  destination="/mnt/assistant_data"
+  initial_size = "2gb"
