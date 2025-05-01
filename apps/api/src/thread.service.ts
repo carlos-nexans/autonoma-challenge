@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Message, Thread, Threads } from '@repo/api';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import OpenAI from 'openai';
+import { Thread as ThreadEntity } from './entities/thread.entity';
+import { Message as MessageEntity } from './entities/message.entity';
 
 const generateTitlePrompt = `
 You are an expert at creating concise, informative titles.
@@ -29,25 +33,43 @@ const defaultTitle = 'New Conversation';
 
 @Injectable()
 export class ThreadService {
-    private threads: Map<string, Thread> = new Map();
-
-    constructor(private readonly openai: OpenAI) {}
+    constructor(
+        @InjectRepository(ThreadEntity)
+        private threadRepository: Repository<ThreadEntity>,
+        @InjectRepository(MessageEntity)
+        private messageRepository: Repository<MessageEntity>,
+        private readonly openai: OpenAI
+    ) {}
 
     // Create a new thread
     async createThread({ messages = [] }: { messages: Message[] }): Promise<Thread> {
         const threadId = this.generateId();
         let title = await this.generateTitle(messages);
 
-        const newThread: Thread = {
+        const newThread = this.threadRepository.create({
             id: threadId,
-            messages,
             title,
+            messages: [],
             createdAt: new Date(),
             updatedAt: new Date()
-        };
+        });
 
-        this.threads.set(threadId, newThread);
-        return newThread;
+        await this.threadRepository.save(newThread);
+
+        // Save messages if any
+        if (messages.length > 0) {
+            const messageEntities = messages.map(msg => 
+                this.messageRepository.create({
+                    id: this.generateId(),
+                    threadId: threadId,
+                    role: msg.role,
+                    content: msg.content,
+                })
+            );
+            await this.messageRepository.save(messageEntities);
+        }
+
+        return this.getThread(threadId);
     }
 
     async generateTitle(messages: Message[]): Promise<string> {
@@ -80,17 +102,30 @@ export class ThreadService {
 
     // Add message to a thread
     async addMessage(threadId: string, message: Message): Promise<void> {
-        const thread = this.threads.get(threadId);
-        thread.messages.push(message);
+        const thread = await this.threadRepository.findOne({ where: { id: threadId } });
+        if (!thread) {
+            throw new NotFoundException('Thread not found');
+        }
+
+        const messageEntity = this.messageRepository.create({
+            id: this.generateId(),
+            threadId: threadId,
+            role: message.role,
+            content: message.content,
+        });
+        await this.messageRepository.save(messageEntity);
 
         if (thread.title === defaultTitle) {
-            thread.title = await this.generateTitle(thread.messages);
+            const messages = await this.messageRepository.find({ where: { threadId } });
+            thread.title = await this.generateTitle(messages);
+            await this.threadRepository.save(thread);
         }
     }
 
     // Get list of all threads
-    getThreads(): Threads {
-        return Array.from(this.threads.values()).map(thread => ({
+    async getThreads(): Promise<Threads> {
+        const threads = await this.threadRepository.find();
+        return threads.map(thread => ({
             id: thread.id,
             title: thread.title,
             createdAt: thread.createdAt,
@@ -99,8 +134,12 @@ export class ThreadService {
     }
 
     // Get a specific thread
-    getThread(threadId: string): Thread {
-        const thread = this.threads.get(threadId);
+    async getThread(threadId: string): Promise<Thread> {
+        const thread = await this.threadRepository.findOne({
+            where: { id: threadId },
+            relations: ['messages']
+        });
+        
         if (!thread) {
             throw new NotFoundException('Thread not found');
         }
@@ -108,8 +147,11 @@ export class ThreadService {
         return thread;
     }
 
-    archiveThread(threadId: string): void {
-        this.threads.delete(threadId);
+    async archiveThread(threadId: string): Promise<void> {
+        const result = await this.threadRepository.delete(threadId);
+        if (result.affected === 0) {
+            throw new NotFoundException('Thread not found');
+        }
     }
 
     private generateId(): string {

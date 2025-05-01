@@ -1,0 +1,10 @@
+# Ignore environment files in apps/api
+apps/api/.env
+
+# Common files to ignore
+node_modules
+.turbo
+dist
+build
+coverage
+.next
