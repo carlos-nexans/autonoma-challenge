@@ -8,12 +8,15 @@ You are a helpful assistant. Respond to all questions and comments in a friendly
 Formant your responses in Markdown when necessary (code, quotes and headings).
 `
 
+const defaultModel = 'gpt-4o-mini';
+
 @Injectable()
 export class ChatService {
 
     constructor(private readonly openai: OpenAI, private readonly threadService: ThreadService) {}
 
     async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
+        console.log(input.model)
         let threadId = input.thread;
 
         // Create new thread if none is provided
@@ -29,7 +32,7 @@ export class ChatService {
         }
 
         const completion = await this.openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+            model: input.model || defaultModel,
             messages: [
                 {
                     role: 'system',

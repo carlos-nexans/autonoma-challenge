@@ -2,9 +2,17 @@
 
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import useChat from "@/hooks/useChat"
 import { cn } from "@/lib/utils"
-import { Message } from "@repo/api"
+import { Message, SupportedModel, supportedModels } from "@repo/api"
 import {
   ArrowUp
 } from "lucide-react"
@@ -25,6 +33,8 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
     loading,
     hasTyped,
     setHasTyped,
+    selectedModel,
+    setSelectedModel,
   } = useChat({ thread, history })
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -135,18 +145,17 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
       {/* Text area */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-50">
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-          <div
-            className={cn(
-              "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
-              loading && "opacity-80",
-            )}
-          >
+          <div className={cn(
+            "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
+            loading && "opacity-80",
+          )}>
             <div className="pb-9">
               <Textarea
                 ref={textareaRef}
                 placeholder={loading ? "Waiting for response..." : "Ask Anything"}
                 className="min-h-[24px] max-h-[160px] w-full rounded-3xl border-0 bg-transparent text-gray-900 placeholder:text-gray-400 placeholder:text-base focus-visible:ring-0 focus-visible:ring-offset-0 text-base pl-2 pr-4 pt-0 pb-0 resize-none overflow-y-auto leading-tight"
                 value={inputValue}
+                disabled={loading}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onFocus={() => {
@@ -161,7 +170,22 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
             <div className="absolute bottom-3 left-3 right-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-
+                  <Select
+                    value={selectedModel}
+                    onValueChange={(value) => setSelectedModel(value as SupportedModel)}
+                    disabled={loading}
+                  >
+                    <SelectTrigger className="h-8 text-sm bg-transparent focus:ring-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {supportedModels.map(model => (
+                          <SelectItem key={model} value={model}>{model}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <Button

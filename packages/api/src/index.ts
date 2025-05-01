@@ -8,6 +8,7 @@ export type Message = {
 export type AddMessageInput = {
   thread?: string;
   messages: Message[];
+  model?: SupportedModel;
 }
 
 export type StreamingEvent = {
@@ -24,3 +25,9 @@ export type Thread = {
 }
 
 export type Threads = Pick<Thread, 'id' | 'title' | 'createdAt' | 'updatedAt'>[];
+
+export const supportedModels = [
+  'gpt-4o', 'gpt-4o-mini', 'gpt-4.1'
+] as const;
+
+export type SupportedModel = typeof supportedModels[number];

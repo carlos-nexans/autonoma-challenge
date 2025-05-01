@@ -1,12 +1,11 @@
 import { toast } from "sonner"
 import { useEffect, useState } from "react";
-import type { AddMessageInput, Message, StreamingEvent } from "@repo/api";
+import type { AddMessageInput, Message, StreamingEvent, SupportedModel } from "@repo/api";
 import { useThreads } from "./useThreads";
 import { useRouter } from "next/navigation";
 
 export default function useChat({ thread, history = [] }: { thread?: string, history?: Message[] } = {}) {
     const { refetch } = useThreads();
-    const router = useRouter();
 
     const [threadId, setThreadId] = useState<string | undefined>(thread);
     const [messages, setMessages] = useState<Message[]>(history);
@@ -14,6 +13,7 @@ export default function useChat({ thread, history = [] }: { thread?: string, his
     const [inputValue, setInputValue] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [hasTyped, setHasTyped] = useState(false);
+    const [selectedModel, setSelectedModel] = useState<SupportedModel>("gpt-4o-mini");
 
     const modifyLatestMessage = (content: string) => (currentMessages: Message[]) => {
         const newMessages = [...currentMessages];
@@ -71,6 +71,7 @@ export default function useChat({ thread, history = [] }: { thread?: string, his
                 body: JSON.stringify({
                     messages: messages,
                     thread: threadId,
+                    model: selectedModel,
                 } as AddMessageInput),
             })
 
@@ -105,5 +106,7 @@ export default function useChat({ thread, history = [] }: { thread?: string, his
         setLoading,
         hasTyped,
         setHasTyped,
+        selectedModel,
+        setSelectedModel,
     };
 }
