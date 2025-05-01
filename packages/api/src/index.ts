@@ -8,3 +8,8 @@ export type Message = {
 export type AddMessageInput = {
   messages: Message[];
 }
+
+export type StreamingEvent = {
+  type: 'chunk' | 'done';
+  content: string;
+}

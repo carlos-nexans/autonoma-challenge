@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OpenAI } from 'openai';
-import { Message, AddMessageInput } from "@repo/api"
+import { Message, AddMessageInput, StreamingEvent } from "@repo/api"
 
 const systemPrompt = `
 You are a helpful assistant. Respond to all questions and comments in a friendly and helpful manner.
@@ -15,7 +15,7 @@ export class AppService {
         this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     }
 
-    async addMessage(input: AddMessageInput): Promise<Message> {
+    async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
         const completion = await this.openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: [
@@ -25,13 +25,23 @@ export class AppService {
                 },
                 ...input.messages
             ],
+            stream: true,
         });
 
-        const assistantResponse = completion.choices[0]?.message?.content || '';
-
-        return {
-            role: 'assistant',
-            content: assistantResponse,
-        };
+        for await (const part of completion) {
+            // emit chunks to the streaming endpoint
+            if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === null) {
+                onEvent({
+                    type: 'chunk',
+                    content: part.choices[0].delta.content || '',
+                });
+            // emit end chunk
+            } else if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === 'stop') {
+                onEvent({
+                    type: 'done',
+                    content: part.choices[0].delta.content || '',
+                });
+            }
+        }
     }
 }
