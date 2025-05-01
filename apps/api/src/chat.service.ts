@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OpenAI } from 'openai';
 import { Message, AddMessageInput, StreamingEvent } from "@repo/api"
+import { ThreadService } from './thread.service';
 
 const systemPrompt = `
 You are a helpful assistant. Respond to all questions and comments in a friendly and helpful manner.
@@ -8,14 +9,25 @@ Formant your responses in Markdown when necessary (code, quotes and headings).
 `
 
 @Injectable()
-export class AppService {
-    private openai: OpenAI;
+export class ChatService {
 
-    constructor() {
-        this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    }
+    constructor(private readonly openai: OpenAI, private readonly threadService: ThreadService) {}
 
     async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
+        let threadId = input.thread;
+
+        // Create new thread if none is provided
+        if (!threadId) {
+            console.log('creating new thread it was', threadId);
+            const thread = await this.threadService.createThread({ messages: input.messages });
+            threadId = thread.id;
+
+            onEvent({
+                type: 'thread',
+                content: threadId,
+            });
+        }
+
         const completion = await this.openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: [
@@ -28,20 +40,30 @@ export class AppService {
             stream: true,
         });
 
+        let buffer = "";
         for await (const part of completion) {
             // emit chunks to the streaming endpoint
             if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === null) {
+                const content = part.choices[0].delta.content || '';
+                buffer += content;
                 onEvent({
                     type: 'chunk',
-                    content: part.choices[0].delta.content || '',
+                    content,
                 });
-            // emit end chunk
+                // emit end chunk
             } else if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === 'stop') {
+                const content = part.choices[0].delta.content || '';
+                buffer += content;
                 onEvent({
                     type: 'done',
-                    content: part.choices[0].delta.content || '',
+                    content,
                 });
             }
         }
+
+        await this.threadService.addMessage(threadId, {
+            role: 'assistant',
+            content: buffer,
+        });
     }
 }

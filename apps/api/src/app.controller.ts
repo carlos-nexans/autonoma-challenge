@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Post, Response } from '@nestjs/common';
-import { AppService } from './app.service';
-import type { Message, AddMessageInput, StreamingEvent } from "@repo/api"
+import { Body, Controller, Get, Param, Post, Response } from '@nestjs/common';
+import { ChatService } from './chat.service';
+import type { Message, AddMessageInput, StreamingEvent, Threads, Thread } from "@repo/api"
 import { ServerResponse } from 'http';
+import { ThreadService } from './thread.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly chatService: ChatService, private readonly threadService: ThreadService) {}
 
   @Get("/health")
   getHealth(): string {
@@ -26,7 +27,22 @@ export class AppController {
       res.write(`${JSON.stringify(event)}\n\n`);
     }
 
-    await this.appService.addMessage(payload, onEvent)
+    await this.chatService.addMessage(payload, onEvent)
     res.end();
+  }
+
+  @Get("/threads")
+  async getThreads(): Promise<Threads> {
+    return this.threadService.getThreads()
+  }
+
+  @Get("/threads/:id")
+  async getThread(@Param('id') id: string): Promise<Thread> {
+    return this.threadService.getThread(id)
+  }
+
+  @Post("/threads")
+  async createThread(): Promise<Thread> {
+    return this.threadService.createThread({ messages: [] })
   }
 }

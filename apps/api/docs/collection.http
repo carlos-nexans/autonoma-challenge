@@ -10,3 +10,13 @@ Content-Type: application/json
 		}
 	]
 }
+
+### Get threads
+GET http://localhost:3000/threads
+
+### Get thread
+GET http://localhost:3000/threads/p07m847fxema5leq28
+
+### Create Thread
+POST http://localhost:3000/threads
+Accept: application/json

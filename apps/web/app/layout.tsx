@@ -1,5 +1,12 @@
-import { Toaster } from "@/components/ui/sonner"
-import type { Metadata } from "next";
+'use client'
+
+import { AppSidebar } from "@/components/app-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider
+} from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+import { QueryProvider } from '@/components/query-provider';
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -13,10 +20,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Chat assistant",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +31,14 @@ export default function RootLayout({
         className="font-sans antialiased"
         id="root"
       >
-        {children}
+        <QueryProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset className="bg-gray-50">
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
+        </QueryProvider>
         <Toaster />
       </body>
     </html>

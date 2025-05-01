@@ -6,10 +6,21 @@ export type Message = {
 }
 
 export type AddMessageInput = {
+  thread?: string;
   messages: Message[];
 }
 
 export type StreamingEvent = {
-  type: 'chunk' | 'done';
+  type: 'thread' | 'chunk' | 'done';
   content: string;
 }
+
+export type Thread = {
+  id: string;
+  title?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  messages: Message[];
+}
+
+export type Threads = Pick<Thread, 'id' | 'title' | 'createdAt' | 'updatedAt'>[];

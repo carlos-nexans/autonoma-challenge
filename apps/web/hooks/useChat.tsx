@@ -1,9 +1,15 @@
 import { toast } from "sonner"
-import { useState } from "react";
-import type { Message, StreamingEvent } from "@repo/api";
+import { useEffect, useState } from "react";
+import type { AddMessageInput, Message, StreamingEvent } from "@repo/api";
+import { useThreads } from "./useThreads";
+import { useRouter } from "next/navigation";
 
-export default function useChat() {
-    const [messages, setMessages] = useState<Message[]>([]);
+export default function useChat({ thread, history = [] }: { thread?: string, history?: Message[] } = {}) {
+    const { refetch } = useThreads();
+    const router = useRouter();
+
+    const [threadId, setThreadId] = useState<string | undefined>(thread);
+    const [messages, setMessages] = useState<Message[]>(history);
     const [streaming, setStreaming] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -34,10 +40,19 @@ export default function useChat() {
             for (let line of lines) {
                 if (line.trim() === "") continue;
                 const event = JSON.parse(line) as StreamingEvent;
+
+                // Server sent a chunk of the response
                 if (event.type === "chunk") {
                     content += event.content;
+                // Server closed the stream
                 } else if (event.type === "done") {
                     content += event.content;
+                // Server created a new thread for this chat
+                } else if (event.type === "thread") {
+                    const newThreadId = event.content;
+                    setThreadId(newThreadId);
+                    window.history.pushState({}, "", `/chat/${newThreadId}`);
+                    await refetch();
                 }
 
                 setMessages(modifyLatestMessage(content));
@@ -55,7 +70,8 @@ export default function useChat() {
                 },
                 body: JSON.stringify({
                     messages: messages,
-                }),
+                    thread: threadId,
+                } as AddMessageInput),
             })
 
             if (!res.ok || !res.body) {

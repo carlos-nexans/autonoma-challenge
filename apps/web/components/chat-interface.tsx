@@ -9,13 +9,14 @@ import {
   ArrowUp
 } from "lucide-react"
 import type React from "react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
-import 'highlight.js/styles/github.css' // o cualquier tema
+import 'highlight.js/styles/github.css'; // o cualquier tema
 import 'github-markdown-css'
+import { useIsMobile } from "@/hooks/use-mobile"
 
-export default function ChatInterface() {
+export default function ChatInterface({ thread, history }: { thread?: string, history?: Message[] }) {
   const {
     messages,
     addMessage,
@@ -24,46 +25,10 @@ export default function ChatInterface() {
     loading,
     hasTyped,
     setHasTyped,
-  } = useChat()
+  } = useChat({ thread, history })
+
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const chatContainerRef = useRef<HTMLDivElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
-  const [viewportHeight, setViewportHeight] = useState(0)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputContainerRef = useRef<HTMLDivElement>(null)
-  const mainContainerRef = useRef<HTMLDivElement>(null)
-  // Store selection state
-
-  // Check if device is mobile and get viewport height
-  useEffect(() => {
-    const checkMobileAndViewport = () => {
-      const isMobileDevice = window.innerWidth < 768
-      setIsMobile(isMobileDevice)
-
-      // Capture the viewport height
-      const vh = window.innerHeight
-      setViewportHeight(vh)
-
-      // Apply fixed height to main container on mobile
-      if (isMobileDevice && mainContainerRef.current) {
-        mainContainerRef.current.style.height = `${vh}px`
-      }
-    }
-
-    checkMobileAndViewport()
-
-    // Set initial height
-    if (mainContainerRef.current) {
-      mainContainerRef.current.style.height = isMobile ? `${viewportHeight}px` : "100svh"
-    }
-
-    // Update on resize
-    window.addEventListener("resize", checkMobileAndViewport)
-
-    return () => {
-      window.removeEventListener("resize", checkMobileAndViewport)
-    }
-  }, [isMobile, viewportHeight])
+  const isMobile = useIsMobile()
 
   // Focus the textarea on component mount (only on desktop)
   useEffect(() => {
@@ -147,18 +112,10 @@ export default function ChatInterface() {
 
   return (
     <div
-      ref={mainContainerRef}
-      className="bg-gray-50 flex flex-col overflow-hidden"
-      style={{ height: isMobile ? `${viewportHeight}px` : "100svh" }}
+      className="flex flex-col overflow-hidden h-full"
     >
-      <header className="fixed top-0 left-0 right-0 h-12 flex items-center px-4 z-20 bg-gray-50">
-        <div className="w-full flex items-center justify-between px-2">
-          <h1 className="text-base font-medium text-gray-800 text-center flex-1">AI Chat</h1>
-        </div>
-      </header>
-
       {/* Chat messages */}
-      <div ref={chatContainerRef} className="flex-grow pb-32 pt-12 px-4 overflow-y-auto">
+      <div className="flex-grow pb-32 pt-12 px-4 overflow-y-auto">
         <div className="max-w-3xl mx-auto space-y-4">
           {messages.map((message, index) => (
             <div
@@ -171,7 +128,6 @@ export default function ChatInterface() {
               </div>
             </div>
           ))}
-          <div ref={messagesEndRef} />
         </div>
       </div>
 
@@ -180,7 +136,6 @@ export default function ChatInterface() {
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-50">
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
           <div
-            ref={inputContainerRef}
             className={cn(
               "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
               loading && "opacity-80",
