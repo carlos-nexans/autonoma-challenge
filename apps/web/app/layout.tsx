@@ -23,9 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${geistMono.variable} ${inter.variable}`}>
       <body
-        className={`${inter.variable} ${geistMono.variable} antialiased`}
+        className="font-sans antialiased"
+        id="root"
       >
         {children}
         <Toaster />

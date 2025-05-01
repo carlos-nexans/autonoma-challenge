@@ -6,15 +6,14 @@ import useChat from "@/hooks/useChat"
 import { cn } from "@/lib/utils"
 import { Message } from "@repo/api"
 import {
-  ArrowUp,
-  Copy,
-  RefreshCcw,
-  Share2,
-  ThumbsDown,
-  ThumbsUp
+  ArrowUp
 } from "lucide-react"
 import type React from "react"
 import { useEffect, useRef, useState } from "react"
+import Markdown from 'react-markdown'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/github.css' // o cualquier tema
+import 'github-markdown-css'
 
 export default function ChatInterface() {
   const {
@@ -129,34 +128,19 @@ export default function ChatInterface() {
             message.role === "user" ? "bg-white border border-gray-200 rounded-br-none" : "text-gray-900",
           )}
         >
-          {/* For user messages or completed assistant messages, render without animation */}
-          {message.content && (
+          {message.role === "user" && message.content && (
             <span>
               {message.content}
             </span>
           )}
+          {message.role === "assistant" && message.content && (
+            <div className="markdown-body">
+              <Markdown rehypePlugins={[rehypeHighlight]} >
+                {message.content}
+              </Markdown>
+            </div>
+          )}
         </div>
-
-        {/* Message actions */}
-        {message.role === "assistant" && (
-          <div className="flex items-center gap-2 px-4 mt-1 mb-2">
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
-              <RefreshCcw className="h-4 w-4" />
-            </button>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
-              <Copy className="h-4 w-4" />
-            </button>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
-              <Share2 className="h-4 w-4" />
-            </button>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
-              <ThumbsUp className="h-4 w-4" />
-            </button>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors">
-              <ThumbsDown className="h-4 w-4" />
-            </button>
-          </div>
-        )}
       </div>
     )
   }
