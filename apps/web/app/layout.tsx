@@ -10,6 +10,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import { TopProgressBar } from "@/components/top-progress-bar";
 import { Suspense } from "react";
+import { Posthog } from "@/components/posthog";
 
 const inter = Inter({
   variable: "--font-inter-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
         className="font-sans antialiased"
         id="root"
       >
+        <Posthog>
         <QueryProvider>
           <Suspense>
             <TopProgressBar />
@@ -49,6 +51,7 @@ export default function RootLayout({
           </SidebarProvider>
         </QueryProvider>
         <Toaster />
+        </Posthog>
       </body>
     </html>
   );
