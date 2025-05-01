@@ -1,5 +1,3 @@
-'use client'
-
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   SidebarInset,
@@ -9,6 +7,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from '@/components/query-provider';
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { Metadata } from "next";
+import { TopProgressBar } from "@/components/top-progress-bar";
+import { Suspense } from "react";
 
 const inter = Inter({
   variable: "--font-inter-sans",
@@ -19,6 +20,11 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const metadata: Metadata = {
+  title: 'AI assistant made by Carlos Nexans',
+  robots: "noindex, noffollow"
+}
 
 export default function RootLayout({
   children,
@@ -32,6 +38,9 @@ export default function RootLayout({
         id="root"
       >
         <QueryProvider>
+          <Suspense>
+            <TopProgressBar />
+          </Suspense>
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset className="bg-gray-50">

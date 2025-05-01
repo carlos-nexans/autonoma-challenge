@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import useChat from "@/hooks/useChat"
+import useChat, { UIMessage } from "@/hooks/useChat"
 import { cn } from "@/lib/utils"
 import { Message, SupportedModel, supportedModels } from "@repo/api"
 import {
@@ -94,7 +94,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
   }
 
 
-  const renderMessage = (message: Message, index: number) => {
+  const renderMessage = (message: UIMessage, index: number) => {
     return (
       <div key={index} className={cn("flex flex-col", message.role === "user" ? "items-end" : "items-start")}>
         <div
@@ -109,11 +109,14 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
             </span>
           )}
           {message.role === "assistant" && message.content && (
-            <div className="markdown-body">
-              <Markdown rehypePlugins={[rehypeHighlight]} >
-                {message.content}
-              </Markdown>
-            </div>
+            <>
+              <div className={cn("markdown-body transition-opacity duration-300", message.streaming ? "opacity-85" : "opacity-100")}>
+                <Markdown rehypePlugins={[rehypeHighlight]} >
+                  {message.content}
+                </Markdown>
+              </div>
+              
+            </>
           )}
         </div>
       </div>

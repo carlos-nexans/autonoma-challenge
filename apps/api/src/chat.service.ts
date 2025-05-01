@@ -27,6 +27,9 @@ export class ChatService {
                 type: 'thread',
                 content: threadId,
             });
+        } else {
+            const latestMessage = input.messages[input.messages.length - 1];
+            await this.threadService.addMessage(threadId, latestMessage);
         }
 
         const completion = await this.openai.chat.completions.create({

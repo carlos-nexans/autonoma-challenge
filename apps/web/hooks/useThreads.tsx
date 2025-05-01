@@ -7,8 +7,9 @@ export const useThreads = function () {
     const router = useRouter()
     const { data: threads = [], refetch } = useQuery({
         queryKey: ['threads'],
-        staleTime: 5 * 60 * 1000,
+        staleTime: 5 * 1000,
         refetchOnMount: false,
+        gcTime: 5 * 60 * 1000,
         queryFn: async () => {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/threads`)
             if (!response.ok) {
