@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from "react"
-import { Bot, GalleryVerticalEnd } from "lucide-react"
+import * as React from "react";
+import { Bot, EditIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,12 +15,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import { Threads } from "@repo/api";
 import { useThreads } from "@/hooks/useThreads";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { threads } = useThreads();
+  const { threads, newThread } = useThreads();
 
   return (
     <Sidebar {...props}>
@@ -43,31 +45,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
+            <Button variant="default" className="w-full cursor-pointer" onClick={newThread}>
+              <EditIcon className="size-4" />
+              <span className="font-medium">
+                New conversation
+              </span>
+            </Button>
             {threads?.length ? (
-              <SidebarMenuItem>
+              <SidebarMenuItem className="mx-0 px-0">
                 <SidebarMenuButton asChild>
                   <span className="font-medium">
                     Conversaciones
                   </span>
                 </SidebarMenuButton>
-                <SidebarMenuSub>
+                <SidebarMenuSub className="mx-0 px-0 border-0 gap-1">
                   {threads.map((thread: Threads[0]) => (
                     <SidebarMenuSubItem key={thread.id}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={`/chat/${thread.id}`}>{thread.title}</a>
+                      <SidebarMenuSubButton asChild className="block w-full whitespace-normal break-words py-2 px-2 h-auto">
+                        <Link href={`/chat/${thread.id}`}>{thread.title}</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>
-              </SidebarMenuItem>
-            ) : null}
-            {!threads?.length ? (
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <span className="font-medium">
-                    No conversations yet
-                  </span>
-                </SidebarMenuButton>
               </SidebarMenuItem>
             ) : null}
           </SidebarMenu>

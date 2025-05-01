@@ -1,34 +1,63 @@
 'use client'
 
-import { Threads } from "@repo/api"
-import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 
 export const useThreads = function () {
-    const [threads, setThreads] = useState<Threads>([])
+    const router = useRouter()
+    const { data: threads = [], refetch } = useQuery({
+        queryKey: ['threads'],
+        staleTime: 5 * 60 * 1000,
+        refetchOnMount: false,
+        queryFn: async () => {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/threads`)
+            if (!response.ok) {
+                throw new Error('Failed to fetch threads')
+            }
+            return response.json()
+        }
+    })
 
     const addThread = async function () {
-        const newThread = {
-            id: Math.random().toString(36).substring(2, 15),
-            title: 'New Thread',
-            createdAt: new Date(),
-            updatedAt: new Date(),
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/threads`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed to create thread')
         }
 
-        setThreads([
-            ...threads,
-            newThread,
-        ])
-
-        return newThread;
+        const newThread = await response.json()
+        await refetch()
+        return newThread
     }
     
     const deleteThread = async function (id: string) {
-        setThreads(threads.filter((thread) => thread.id !== id))
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/threads/${id}`, {
+            method: 'DELETE'
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed to delete thread')
+        }
+
+        await refetch()
+    }
+
+    const newThread = async function () {
+        const thread = await addThread()
+        router.push(`/chat/${thread.id}`)
     }
 
     return {
         threads,
         addThread,
         deleteThread,
+        newThread,
+        refetch,
     }
 }

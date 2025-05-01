@@ -1,3 +1,5 @@
+'use client'
+
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   SidebarInset,
@@ -5,7 +7,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from '@/components/query-provider';
-import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,10 +19,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-export const metadata: Metadata = {
-  title: "Chat assistant",
-};
 
 export default function RootLayout({
   children,
@@ -37,7 +34,7 @@ export default function RootLayout({
         <QueryProvider>
           <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>
+            <SidebarInset className="bg-gray-50">
               {children}
             </SidebarInset>
           </SidebarProvider>

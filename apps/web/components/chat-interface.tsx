@@ -9,14 +9,14 @@ import {
   ArrowUp
 } from "lucide-react"
 import type React from "react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
-import 'highlight.js/styles/github.css' // o cualquier tema
+import 'highlight.js/styles/github.css'; // o cualquier tema
 import 'github-markdown-css'
 import { useIsMobile } from "@/hooks/use-mobile"
 
-export default function ChatInterface() {
+export default function ChatInterface({ thread, history }: { thread?: string, history?: Message[] }) {
   const {
     messages,
     addMessage,
@@ -25,7 +25,8 @@ export default function ChatInterface() {
     loading,
     hasTyped,
     setHasTyped,
-  } = useChat()
+  } = useChat({ thread, history })
+
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const isMobile = useIsMobile()
 
@@ -111,7 +112,7 @@ export default function ChatInterface() {
 
   return (
     <div
-      className="bg-gray-50 flex flex-col overflow-hidden h-full"
+      className="flex flex-col overflow-hidden h-full"
     >
       {/* Chat messages */}
       <div className="flex-grow pb-32 pt-12 px-4 overflow-y-auto">
