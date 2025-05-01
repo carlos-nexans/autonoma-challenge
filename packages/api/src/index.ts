@@ -1,14 +1,10 @@
-import { Link } from 'links/entities/link.entity';
+type Role = "user" | "assistant"
 
-import { CreateLinkDto } from 'links/dto/create-link.dto';
-import { UpdateLinkDto } from 'links/dto/update-link.dto';
+export type Message = {
+  role: Role;
+  content: string;
+}
 
-export const links = {
-  dto: {
-    CreateLinkDto,
-    UpdateLinkDto,
-  },
-  entities: {
-    Link,
-  },
-};
+export type AddMessageInput = {
+  messages: Message[];
+}
