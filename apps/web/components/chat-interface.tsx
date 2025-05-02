@@ -184,7 +184,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
                     <SelectContent>
                       <SelectGroup>
                         {supportedModels.map(model => (
-                          <SelectItem key={model} value={model}>{model}</SelectItem>
+                          <SelectItem key={model} value={model}><span>{model}</span></SelectItem>
                         ))}
                       </SelectGroup>
                     </SelectContent>
