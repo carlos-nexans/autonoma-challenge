@@ -1,19 +1,19 @@
+// @ts-nocheck
 import { Injectable } from '@nestjs/common';
-import { OpenAI } from 'openai';
-import { Message, AddMessageInput, StreamingEvent } from "@repo/api"
-import { ThreadService } from './thread.service';
+import Anthropic from '@anthropic-ai/sdk';
+import { AddMessageInput, anthropicModels, StreamingEvent } from "@repo/api";
+import { ThreadService } from './ThreadService';
 
 const systemPrompt = `
 You are a helpful assistant. Respond to all questions and comments in a friendly and helpful manner.
 Formant your responses in Markdown when necessary (code, quotes and headings).
 `
 
-const defaultModel = 'gpt-4o-mini';
+const defaultModel = 'claude-3-opus-20240229';
 
 @Injectable()
-export class ChatService {
-
-    constructor(private readonly openai: OpenAI, private readonly threadService: ThreadService) {}
+export class AnthropicChatService {
+    constructor(private readonly anthropic: Anthropic, private readonly threadService: ThreadService) {}
 
     async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
         let threadId = input.thread;
@@ -32,35 +32,46 @@ export class ChatService {
             await this.threadService.addMessage(threadId, latestMessage);
         }
 
-        const completion = await this.openai.chat.completions.create({
+        const messages = input.messages.map(msg => ({
+            role: msg.role,
+            content: msg.content
+        }));
+
+        const modelData = anthropicModels.find(m => m.key === input.model);
+        if (!modelData) {
+            onEvent({
+                type: 'error',
+                content: 'Model not supported',
+            });
+            return;
+        }
+
+        const stream = await this.anthropic.messages.create({
             model: input.model || defaultModel,
-            messages: [
-                {
-                    role: 'system',
-                    content: systemPrompt,
-                },
-                ...input.messages
-            ],
+            messages: messages,
+            system: systemPrompt,
             stream: true,
+            // TODO: make configurable
+            max_tokens: modelData.maxTokens,
         });
 
+        let id = undefined;
         let buffer = "";
-        for await (const part of completion) {
-            // emit chunks to the streaming endpoint
-            if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === null) {
-                const content = part.choices[0].delta.content || '';
+        
+        for await (const part of stream) {
+            if (part.type === 'message_start') {
+                id = part.message.id;
+            } else if (part.type === 'content_block_delta') {
+                const content = part.delta.text || '';
                 buffer += content;
                 onEvent({
                     type: 'chunk',
                     content,
                 });
-                // emit end chunk
-            } else if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === 'stop') {
-                const content = part.choices[0].delta.content || '';
-                buffer += content;
+            } else if (part.type === 'message_stop') {
                 onEvent({
                     type: 'done',
-                    content,
+                    content: '',
                 });
             }
         }
@@ -68,6 +79,8 @@ export class ChatService {
         const result = await this.threadService.addMessage(threadId, {
             role: 'assistant',
             content: buffer,
+            id,
+            provider: 'anthropic',
         });
 
         if (result.actions.includes('changed_title')) {

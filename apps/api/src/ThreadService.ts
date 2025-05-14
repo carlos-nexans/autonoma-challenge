@@ -3,8 +3,8 @@ import { Message, Thread, Threads } from '@repo/api';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import OpenAI from 'openai';
-import { Thread as ThreadEntity } from './entities/thread.entity';
-import { Message as MessageEntity } from './entities/message.entity';
+import { Thread as ThreadEntity } from './entities/ThreadEntity';
+import { Message as MessageEntity } from './entities/MessageEntity';
 
 const generateTitlePrompt = `
 You are an expert at creating concise, informative titles.
@@ -50,11 +50,9 @@ export class ThreadService {
 
     // Create a new thread
     async createThread({ messages = [] }: { messages: Message[] }): Promise<Thread> {
-        const threadId = this.generateId();
         let title = await this.generateTitle(messages);
 
         const newThread = this.threadRepository.create({
-            id: threadId,
             title,
             messages: [],
             createdAt: new Date(),
@@ -67,16 +65,15 @@ export class ThreadService {
         if (messages.length > 0) {
             const messageEntities = messages.map(msg => 
                 this.messageRepository.create({
-                    id: this.generateId(),
-                    threadId: threadId,
                     role: msg.role,
                     content: msg.content,
+                    threadId: newThread.id,
                 })
             );
             await this.messageRepository.save(messageEntities);
         }
 
-        return this.getThread(threadId);
+        return newThread;
     }
 
     async generateTitle(messages: Message[]): Promise<string> {
@@ -115,10 +112,11 @@ export class ThreadService {
         }
 
         const messageEntity = this.messageRepository.create({
-            id: this.generateId(),
             threadId: threadId,
             role: message.role,
             content: message.content,
+            provider: message.provider,
+            id: message.id,
         });
 
         await this.messageRepository.save(messageEntity);
@@ -174,9 +172,5 @@ export class ThreadService {
         if (result.affected === 0) {
             throw new NotFoundException('Thread not found');
         }
-    }
-
-    private generateId(): string {
-        return Math.random().toString(36).substring(2) + Date.now().toString(36);
     }
 }

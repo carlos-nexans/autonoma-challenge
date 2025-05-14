@@ -1,9 +1,9 @@
-import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Message } from './message.entity';
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Message } from './MessageEntity';
 
 @Entity('threads')
 export class Thread {
-    @PrimaryColumn('text')
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column('text')

@@ -1,10 +1,11 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
-import { Thread } from './thread.entity';
+import { Entity, Column, ManyToOne, CreateDateColumn, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Thread } from './ThreadEntity';
+import type { Provider } from '@repo/api';
 
 @Entity('messages')
 export class Message {
-    @PrimaryColumn('text')
-    id: string;
+    @PrimaryGeneratedColumn('uuid')
+    publicId: string;
 
     @Column('text', { name: 'thread_id' })
     threadId: string;
@@ -21,4 +22,10 @@ export class Message {
     @ManyToOne(() => Thread, thread => thread.messages)
     @JoinColumn({ name: 'thread_id' })
     thread: Thread;
+
+    @Column('text', { nullable: true })
+    provider: Provider | null;
+
+    @Column('text', { nullable: true })
+    id: string | null;
 }

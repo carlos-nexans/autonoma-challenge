@@ -1,8 +1,3 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import {
-  SidebarInset,
-  SidebarProvider
-} from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from '@/components/query-provider';
 import { Geist_Mono, Inter } from "next/font/google";
@@ -43,12 +38,7 @@ export default function RootLayout({
           <Suspense>
             <TopProgressBar />
           </Suspense>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset className="bg-gray-50">
               {children}
-            </SidebarInset>
-          </SidebarProvider>
         </QueryProvider>
         <Toaster />
         </Posthog>

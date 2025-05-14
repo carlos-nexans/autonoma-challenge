@@ -20,9 +20,15 @@ import { Threads } from "@repo/api";
 import { useThreads } from "@/hooks/useThreads";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  currentThread?: string;
+};
+
+export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typeof Sidebar> & AppSidebarProps) {
   const { threads, newThread, deleteThread } = useThreads();
+  const router = useRouter();
 
   const handleArchive = async (threadId: string) => {
     try {
@@ -38,27 +44,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link href="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Bot className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Chat assistant</span>
+                  <span className="font-semibold">Home</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenu>
-            <Button variant="default" className="w-full cursor-pointer" onClick={newThread}>
+          <SidebarMenuItem>
+          <SidebarMenuButton size="default" asChild>
+          <Button variant="default" className="w-full cursor-pointer" onClick={newThread}>
               <EditIcon className="size-4" />
               <span className="font-medium">
                 New conversation
               </span>
             </Button>
+            </SidebarMenuButton>
+            </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarMenu>
             {threads?.length ? (
               <SidebarMenuItem className="mx-0 px-0">
                 <SidebarMenuButton asChild>
@@ -80,6 +90,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           onClick={(e) => {
                             e.preventDefault();
                             handleArchive(thread.id);
+                            if (thread.id === currentThread) {
+                              router.push("/");
+                            }
                           }}
                         >
                           <ArchiveIcon className="h-4 w-4" />

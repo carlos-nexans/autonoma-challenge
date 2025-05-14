@@ -6,7 +6,7 @@ dotenv.config();
 
 async function bootstrap() {
   // lazy-load module to allow usage of environment variables
-  const { AppModule } = await import('./app.module.js');
+  const { AppModule } = await import('./AppModule.js');
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   await app.listen(3000);
