@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation"
 import React from "react"
 import { toast } from "sonner"
 
-
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = React.use(params)
     const { thread, isLoading, error } = useThread(id)

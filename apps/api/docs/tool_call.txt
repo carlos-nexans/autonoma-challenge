@@ -1,0 +1,697 @@
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "role": "assistant",
+api:dev:         "content": null,
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "id": "call_mQrryQbVzncviN0fpXTouw0P",
+api:dev:             "type": "function",
+api:dev:             "function": {
+api:dev:               "name": "create_file",
+api:dev:               "arguments": ""
+api:dev:             }
+api:dev:           }
+api:dev:         ],
+api:dev:         "refusal": null
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "{\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "file"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "Name"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\":\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "hola"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "_m"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "undo"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": ".py"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\",\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "file"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "Content"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\":\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "print"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "(\\\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "Hola"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": ","
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": " mundo"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "!\\"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\")"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\",\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "file"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "Type"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\":\""
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "text"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "/plain"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {
+api:dev:         "tool_calls": [
+api:dev:           {
+api:dev:             "index": 0,
+api:dev:             "function": {
+api:dev:               "arguments": "\"}"
+api:dev:             }
+api:dev:           }
+api:dev:         ]
+api:dev:       },
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": null
+api:dev:     }
+api:dev:   ]
+api:dev: }
+api:dev: {
+api:dev:   "id": "chatcmpl-BXCg7pgAxzTKNIFdLnyvSNQGZwu2Q",
+api:dev:   "object": "chat.completion.chunk",
+api:dev:   "created": 1747253259,
+api:dev:   "model": "gpt-4o-mini-2024-07-18",
+api:dev:   "service_tier": "default",
+api:dev:   "system_fingerprint": "fp_0392822090",
+api:dev:   "choices": [
+api:dev:     {
+api:dev:       "index": 0,
+api:dev:       "delta": {},
+api:dev:       "logprobs": null,
+api:dev:       "finish_reason": "tool_calls"
+api:dev:     }
+api:dev:   ]
+api:dev: }

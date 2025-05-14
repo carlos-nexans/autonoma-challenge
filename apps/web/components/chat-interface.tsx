@@ -20,6 +20,7 @@ import type React from "react"
 import { useEffect, useRef } from "react"
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
+import rehypeRaw from'rehype-raw'
 import 'highlight.js/styles/github.css'; // o cualquier tema
 import 'github-markdown-css/github-markdown-light.css'
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -111,7 +112,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
           {message.role === "assistant" && message.content && (
             <>
               <div className={cn("markdown-body transition-opacity duration-300", message.streaming ? "opacity-85" : "opacity-100")}>
-                <Markdown rehypePlugins={[rehypeHighlight]} >
+                <Markdown rehypePlugins={[rehypeHighlight, rehypeRaw]} >
                   {message.content}
                 </Markdown>
               </div>

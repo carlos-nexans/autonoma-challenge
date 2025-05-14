@@ -28,4 +28,7 @@ export class Message {
 
     @Column('text', { nullable: true })
     id: string | null;
+
+    @Column('text')
+    userId: string;
 }
