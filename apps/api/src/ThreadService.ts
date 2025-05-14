@@ -115,6 +115,8 @@ export class ThreadService {
             threadId: threadId,
             role: message.role,
             content: message.content,
+            provider: message.provider,
+            id: message.id,
         });
 
         await this.messageRepository.save(messageEntity);

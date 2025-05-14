@@ -59,11 +59,9 @@ export class AnthropicChatService {
         let buffer = "";
         
         for await (const part of stream) {
-            if (part.id) {
-                id = part.id;
-            }
-            
-            if (part.type === 'content_block_delta') {
+            if (part.type === 'message_start') {
+                id = part.message.id;
+            } else if (part.type === 'content_block_delta') {
                 const content = part.delta.text || '';
                 buffer += content;
                 onEvent({
