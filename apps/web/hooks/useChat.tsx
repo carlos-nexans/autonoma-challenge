@@ -58,6 +58,8 @@ export default function useChat({ thread, history = [] }: { thread?: string, his
                     setThreadId(newThreadId);
                     window.history.pushState({}, "", `/chat/${newThreadId}`);
                     await refetchThreads();
+                } else if (event.type === "error") {
+                    toast.error(event.content);
                 }
 
                 setMessages(modifyLatestMessage({ content, streaming: true }));
