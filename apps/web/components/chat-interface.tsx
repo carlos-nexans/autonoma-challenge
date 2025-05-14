@@ -77,13 +77,17 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
       content: inputValue,
     })
     setInputValue("")
+    // Reset textarea height to default
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Handle Cmd+Enter on both mobile and desktop
     if (!loading && e.key === "Enter" && e.metaKey) {
       e.preventDefault()
-      handleSubmit(e)
+      setInputValue(inputValue + "\n")
       return
     }
 
@@ -124,6 +128,15 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
     )
   }
 
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Add new useEffect for auto-scrolling
+  useEffect(() => {
+    if (messagesEndRef.current && loading) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }, [messages, loading])
+
   return (
     <div
       className="flex flex-col overflow-hidden h-full"
@@ -142,6 +155,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} /> {/* Add this line */}
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for assistant-api on 2025-04-30T21:46:52-03:00
+# fly.toml app configuration file generated for assistant-api on 2025-05-14T17:46:40-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -10,9 +10,14 @@ primary_region = 'eze'
   dockerfile = 'Dockerfile'
 
 [env]
+  DATABASE_URL = '/mnt/assistant_data/db.sqlite'
   NODE_ENV = 'production'
   PORT = '3000'
-  DATABASE_URL = "/mnt/assistant_data/db.sqlite"
+
+[[mounts]]
+  source = 'assistant_data'
+  destination = '/mnt/assistant_data'
+  initial_size = '2gb'
 
 [http_service]
   internal_port = 3000
@@ -25,8 +30,3 @@ primary_region = 'eze'
   memory = '2gb'
   cpu_kind = 'shared'
   cpus = 1
-
-[mounts]
-  source = "assistant_data"
-  destination="/mnt/assistant_data"
-  initial_size = "2gb"
