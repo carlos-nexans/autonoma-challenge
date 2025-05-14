@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { TopProgressBar } from "@/components/top-progress-bar";
 import { Suspense } from "react";
 import { Posthog } from "@/components/posthog";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({
   variable: "--font-inter-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         className="font-sans antialiased"
         id="root"
       >
+        <ClerkProvider>
         <Posthog>
         <QueryProvider>
           <Suspense>
@@ -42,6 +44,7 @@ export default function RootLayout({
         </QueryProvider>
         <Toaster />
         </Posthog>
+        </ClerkProvider>
       </body>
     </html>
   );

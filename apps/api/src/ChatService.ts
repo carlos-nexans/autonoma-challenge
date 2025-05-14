@@ -18,13 +18,10 @@ export class ChatService {
     async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
         let threadId = input.thread;
 
-        console.log('asdasdasd')
-
         // Create new thread if none is provided
         if (!threadId) {
             const thread = await this.threadService.createThread({ messages: input.messages });
             threadId = thread.id;
-            console.log('created thread', threadId)
 
             onEvent({
                 type: 'thread',
