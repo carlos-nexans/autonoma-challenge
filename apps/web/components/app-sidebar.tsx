@@ -55,14 +55,12 @@ export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typ
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-          <SidebarMenuButton size="default" asChild>
           <Button variant="default" className="w-full cursor-pointer" onClick={newThread}>
               <EditIcon className="size-4" />
               <span className="font-medium">
                 New conversation
               </span>
             </Button>
-            </SidebarMenuButton>
             </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
