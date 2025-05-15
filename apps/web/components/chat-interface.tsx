@@ -257,7 +257,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
       className="flex flex-col overflow-hidden h-full"
     >
       {/* Chat messages */}
-      <div className="flex-grow pb-32 pt-12 px-4" onWheel={onManualScroll}>
+      <div className="flex-grow pb-32 pt-12 px-4" onWheel={onManualScroll} onTouchMove={onManualScroll}>
         {messages.length > 0 ? (
           <div className="max-w-3xl mx-auto space-y-4">
             {messages.map((message, index) => (
