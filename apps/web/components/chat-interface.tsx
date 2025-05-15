@@ -344,7 +344,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
 
       {/* Text area */}
       {(messages.length > 0 || isMobile) && (
-        <div className={cn("fixed bottom-0 left-0 right-0 p-4 bg-white", sidebarState === "expanded" ? "pl-[16rem]" : "")}>
+        <div className={cn("fixed bottom-0 left-0 right-0 p-4 bg-white", !isMobile && sidebarState === "expanded" ? "pl-[16rem]" : "")}>
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
             <div className={cn(
               "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
