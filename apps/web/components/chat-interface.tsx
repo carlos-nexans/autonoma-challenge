@@ -226,18 +226,37 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Add new useEffect for auto-scrolling
+  const autoScroll = useRef<boolean>(true)
+
+  // Add new useEffect for initial render scroll
   useEffect(() => {
-    if (messagesEndRef.current && loading) {
+    if (messagesEndRef.current && messages.length > 0) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }, []) // Empty dependency array for initial render only
+
+  // Existing useEffect for auto-scrolling during chat
+  useEffect(() => {
+    if (!messagesEndRef.current) return
+    if (autoScroll.current && loading) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
     }
   }, [messages, loading])
+
+  useEffect(() => {
+    autoScroll.current = true
+  }, [loading])
+
+  const onManualScroll = () => {
+    autoScroll.current = false
+  }
 
   return (
     <div
       className="flex flex-col overflow-hidden h-full"
     >
       {/* Chat messages */}
-      <div className="flex-grow pb-32 pt-12 px-4 overflow-y-auto">
+      <div className="flex-grow pb-32 pt-12 px-4 overflow-y-auto" onWheel={onManualScroll}>
         {messages.length > 0 ? (
           <div className="max-w-3xl mx-auto space-y-4">
             {messages.map((message, index) => (
