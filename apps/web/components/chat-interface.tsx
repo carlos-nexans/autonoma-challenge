@@ -31,6 +31,7 @@ import remarkMath from 'remark-math'
 // `rehype-katex` does not import the CSS for you
 import 'katex/dist/katex.min.css'
 import { ResponsiveSelect } from "./responsive-select"
+import { useSidebar } from "./ui/sidebar"
 
 // Custom Copy Button Component
 const CopyButton = ({ text }: { text: string }) => {
@@ -76,6 +77,8 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
     selectedModel,
     setSelectedModel,
   } = useChat({ thread, history })
+
+  const { state: sidebarState } = useSidebar()
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const isMobile = useIsMobile()
@@ -256,7 +259,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
       className="flex flex-col overflow-hidden h-full"
     >
       {/* Chat messages */}
-      <div className="flex-grow pb-32 pt-12 px-4 overflow-y-auto" onWheel={onManualScroll}>
+      <div className="flex-grow pb-32 pt-12 px-4" onWheel={onManualScroll}>
         {messages.length > 0 ? (
           <div className="max-w-3xl mx-auto space-y-4">
             {messages.map((message, index) => (
@@ -343,7 +346,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
 
       {/* Text area */}
       {(messages.length > 0 || isMobile) && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
+        <div className={cn("fixed bottom-0 left-0 right-0 p-4 bg-white", sidebarState === "expanded" ? "pl-[16rem]" : "")}>
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
             <div className={cn(
               "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
