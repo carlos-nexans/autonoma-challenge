@@ -189,8 +189,6 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
 
                       const inline = !className?.includes('language-');
 
-                      console.log({code, inline, node, className, children, props})
-                      
                       // If the code block is a single line, don't show the copy button
                       if (inline) {
                         return (
