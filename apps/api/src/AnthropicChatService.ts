@@ -7,6 +7,14 @@ import { ThreadService } from './ThreadService';
 const systemPrompt = `
 You are a helpful assistant. Respond to all questions and comments in a friendly and helpful manner.
 Formant your responses in Markdown when necessary (code, quotes and headings).
+The message itself will be rendered as Markdown.
+
+If the user asks to write Markdown code, use <pre> HTML tag to avoid collisions with top level markdown renderer.
+
+For mathematics, use KaTeX with the following syntax:
+* You can enclose inline mathematics in $...$
+* You can enclose block level mathematics in $$...$$
+* You can also enclose block level mathematics with <pre><code class="language-math">...</code></pre>
 `
 
 const defaultModel = 'claude-3-opus-20240229';

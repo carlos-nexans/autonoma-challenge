@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <SidebarProvider>
     <AppSidebar />
-    <SidebarInset className="bg-gray-50">
+    <SidebarInset>
       {children}
     </SidebarInset>
   </SidebarProvider>

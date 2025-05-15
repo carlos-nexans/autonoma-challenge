@@ -16,14 +16,18 @@ import { Message, SupportedModel, supportedModels } from "@repo/api"
 import {
   ArrowUp
 } from "lucide-react"
-import type React from "react"
+import React from "react"
 import { useEffect, useRef } from "react"
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
-import rehypeRaw from'rehype-raw'
+import rehypeRaw from 'rehype-raw'
 import 'highlight.js/styles/github.css'; // o cualquier tema
 import 'github-markdown-css/github-markdown-light.css'
 import { useIsMobile } from "@/hooks/use-mobile"
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
+// `rehype-katex` does not import the CSS for you
+import 'katex/dist/katex.min.css'
 
 export default function ChatInterface({ thread, history }: { thread?: string, history?: Message[] }) {
   const {
@@ -104,20 +108,25 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
       <div key={index} className={cn("flex flex-col", message.role === "user" ? "items-end" : "items-start")}>
         <div
           className={cn(
-            "max-w-[80%] px-4 py-2 rounded-2xl",
+            "max-w-4xl px-4 py-2 rounded-2xl",
             message.role === "user" ? "bg-white border border-gray-200 rounded-br-none" : "text-gray-900",
           )}
         >
           {message.role === "user" && message.content && (
             <span>
-              {message.content}
+              {message.content.split('\n').map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  {i < message.content.split('\n').length - 1 && <br />}
+                </React.Fragment>
+              ))}
             </span>
           )}
           {message.role === "assistant" && message.content && (
             <>
-              <div className={cn("markdown-body transition-opacity duration-300", message.streaming ? "opacity-85" : "opacity-100")}>
-                <Markdown rehypePlugins={[rehypeHighlight, rehypeRaw]} >
-                  {message.content}
+              <div className={cn("markdown-body")}>
+                <Markdown rehypePlugins={[rehypeHighlight, rehypeRaw, rehypeKatex]} remarkPlugins={[remarkMath]}>
+                    {message.content}
                 </Markdown>
               </div>
               
@@ -161,7 +170,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
 
 
       {/* Text area */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-50">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
           <div className={cn(
             "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",

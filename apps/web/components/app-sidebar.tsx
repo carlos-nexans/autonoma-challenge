@@ -107,6 +107,7 @@ export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typ
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+      
       <SidebarRail />
     </Sidebar>
   );

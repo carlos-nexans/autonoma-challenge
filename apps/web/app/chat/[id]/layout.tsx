@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <SidebarProvider>
     <AppSidebar currentThread={id} />
-    <SidebarInset className="bg-gray-50">
+    <SidebarInset>
       {children}
     </SidebarInset>
   </SidebarProvider>
