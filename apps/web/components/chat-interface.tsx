@@ -28,6 +28,7 @@ import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 // `rehype-katex` does not import the CSS for you
 import 'katex/dist/katex.min.css'
+import { ResponsiveSelect } from "./responsive-select"
 
 export default function ChatInterface({ thread, history }: { thread?: string, history?: Message[] }) {
   const {
@@ -108,7 +109,7 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
       <div key={index} className={cn("flex flex-col", message.role === "user" ? "items-end" : "items-start")}>
         <div
           className={cn(
-            "max-w-4xl px-4 py-2 rounded-2xl",
+            "w-full max-w-4xl px-4 py-2 rounded-2xl",
             message.role === "user" ? "bg-white border border-gray-200 rounded-br-none" : "text-gray-900",
           )}
         >
@@ -152,87 +153,150 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
     >
       {/* Chat messages */}
       <div className="flex-grow pb-32 pt-12 px-4 overflow-y-auto">
-        <div className="max-w-3xl mx-auto space-y-4">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-            >
+        {messages.length > 0 ? (
+          <div className="max-w-3xl mx-auto space-y-4">
+            {messages.map((message, index) => (
               <div
-                className="pt-4 flex flex-col justify-start"
+                key={index}
               >
-                {renderMessage(message, index)}
+                <div
+                  className="pt-4 flex flex-col justify-start"
+                >
+                  {renderMessage(message, index)}
+                </div>
               </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} /> {/* Add this line */}
-        </div>
-      </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center">
+            <h1 className={cn(
+              "text-2xl font-semibold mb-8",
+              isMobile ? "text-gray-500" : "text-gray-900"
+            )}>Start chatting</h1>
+            {!isMobile && (
+              <div className="w-full max-w-2xl">
+                <form onSubmit={handleSubmit} className="w-full">
+                  <div className={cn(
+                    "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
+                    loading && "opacity-80",
+                  )}>
+                    <div className="pb-9">
+                      <Textarea
+                        ref={textareaRef}
+                        placeholder={loading ? "Waiting for response..." : "Ask Anything"}
+                        className="min-h-[24px] max-h-[160px] w-full rounded-3xl border-0 bg-transparent text-gray-900 placeholder:text-gray-400 placeholder:text-base focus-visible:ring-0 focus-visible:ring-offset-0 text-base pl-2 pr-4 pt-0 pb-0 resize-none overflow-y-auto leading-tight"
+                        value={inputValue}
+                        disabled={loading}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                      />
+                    </div>
 
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <Select
+                            value={selectedModel}
+                            onValueChange={(value) => setSelectedModel(value as SupportedModel)}
+                            disabled={loading}
+                          >
+                            <SelectTrigger className="h-8 text-sm bg-transparent focus:ring-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {supportedModels.map(model => (
+                                  <SelectItem key={model.key} value={model.key}><span>{model.displayName}</span></SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <Button
+                          type="submit"
+                          variant="outline"
+                          size="icon"
+                          className={cn(
+                            "rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200",
+                            hasTyped ? "bg-black scale-110 hover:bg-slate-900 cursor-pointer" : "bg-gray-200",
+                          )}
+                          disabled={!inputValue.trim() || loading}
+                        >
+                          <ArrowUp className={cn("h-4 w-4 transition-colors", hasTyped ? "text-white" : "text-gray-500")} />
+                          <span className="sr-only">Submit</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Text area */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-          <div className={cn(
-            "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
-            loading && "opacity-80",
-          )}>
-            <div className="pb-9">
-              <Textarea
-                ref={textareaRef}
-                placeholder={loading ? "Waiting for response..." : "Ask Anything"}
-                className="min-h-[24px] max-h-[160px] w-full rounded-3xl border-0 bg-transparent text-gray-900 placeholder:text-gray-400 placeholder:text-base focus-visible:ring-0 focus-visible:ring-offset-0 text-base pl-2 pr-4 pt-0 pb-0 resize-none overflow-y-auto leading-tight"
-                value={inputValue}
-                disabled={loading}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onFocus={() => {
-                  // Ensure the textarea is scrolled into view when focused
-                  if (textareaRef.current) {
-                    textareaRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
-                  }
-                }}
-              />
-            </div>
+      {(messages.length > 0 || isMobile) && (
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
+          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
+            <div className={cn(
+              "relative w-full rounded-3xl border border-gray-200 bg-white p-3 cursor-text",
+              loading && "opacity-80",
+            )}>
+              <div className="pb-9">
+                <Textarea
+                  ref={textareaRef}
+                  placeholder={loading ? "Waiting for response..." : "Ask Anything"}
+                  className="min-h-[24px] max-h-[160px] w-full rounded-3xl border-0 bg-transparent text-gray-900 placeholder:text-gray-400 placeholder:text-base focus-visible:ring-0 focus-visible:ring-offset-0 text-base pl-2 pr-4 pt-0 pb-0 resize-none overflow-y-auto leading-tight"
+                  value={inputValue}
+                  disabled={loading}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => {
+                    // Ensure the textarea is scrolled into view when focused
+                    if (textareaRef.current) {
+                      textareaRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
+                    }
+                  }}
+                />
+              </div>
 
-            <div className="absolute bottom-3 left-3 right-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Select
-                    value={selectedModel}
-                    onValueChange={(value) => setSelectedModel(value as SupportedModel)}
-                    disabled={loading}
+              <div className="absolute bottom-3 left-3 right-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <ResponsiveSelect
+                      value={selectedModel}
+                      onValueChange={(value) => setSelectedModel(value as SupportedModel)}
+                      options={supportedModels.map(model => ({
+                        value: model.key,
+                        label: model.displayName
+                      }))}
+                      disabled={loading}
+                      triggerClassName="h-8 text-sm bg-transparent focus:ring-0"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    size="icon"
+                    className={cn(
+                      "rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200",
+                      hasTyped ? "bg-black scale-110 hover:bg-slate-900 cursor-pointer" : "bg-gray-200",
+                    )}
+                    disabled={!inputValue.trim() || loading}
                   >
-                    <SelectTrigger className="h-8 text-sm bg-transparent focus:ring-0">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {supportedModels.map(model => (
-                          <SelectItem key={model.key} value={model.key}><span>{model.displayName}</span></SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                    <ArrowUp className={cn("h-4 w-4 transition-colors", hasTyped ? "text-white" : "text-gray-500")} />
+                    <span className="sr-only">Submit</span>
+                  </Button>
                 </div>
-
-                <Button
-                  type="submit"
-                  variant="outline"
-                  size="icon"
-                  className={cn(
-                    "rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200",
-                    hasTyped ? "bg-black scale-110 hover:bg-slate-900 cursor-pointer" : "bg-gray-200",
-                  )}
-                  disabled={!inputValue.trim() || loading}
-                >
-                  <ArrowUp className={cn("h-4 w-4 transition-colors", hasTyped ? "text-white" : "text-gray-500")} />
-                  <span className="sr-only">Submit</span>
-                </Button>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      )}
     </div>
   )
 }
