@@ -14,9 +14,11 @@ import useChat, { UIMessage } from "@/hooks/useChat"
 import { cn } from "@/lib/utils"
 import { Message, SupportedModel, supportedModels } from "@repo/api"
 import {
-  ArrowUp
+  ArrowUp,
+  Check,
+  Copy
 } from "lucide-react"
-import React from "react"
+import React, { useState } from "react"
 import { useEffect, useRef } from "react"
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
@@ -29,6 +31,38 @@ import remarkMath from 'remark-math'
 // `rehype-katex` does not import the CSS for you
 import 'katex/dist/katex.min.css'
 import { ResponsiveSelect } from "./responsive-select"
+
+// Custom Copy Button Component
+const CopyButton = ({ text }: { text: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className={`
+        bg-transparent 
+        border-none 
+        cursor-pointer 
+        p-1
+        inline-flex 
+        items-center 
+        justify-center
+      `}
+    >
+      {copied ? (
+        <Check size={16} color="#22c55e" /> // Green color when copied
+      ) : (
+        <Copy size={16} color="#94a3b8" /> // Default color
+      )}
+    </button>
+  );
+};
 
 export default function ChatInterface({ thread, history }: { thread?: string, history?: Message[] }) {
   const {
@@ -126,7 +160,58 @@ export default function ChatInterface({ thread, history }: { thread?: string, hi
           {message.role === "assistant" && message.content && (
             <>
               <div className={cn("markdown-body")}>
-                <Markdown rehypePlugins={[rehypeHighlight, rehypeRaw, rehypeKatex]} remarkPlugins={[remarkMath]}>
+                <Markdown 
+                  rehypePlugins={[rehypeHighlight, rehypeRaw, rehypeKatex]} 
+                  remarkPlugins={[remarkMath]}
+                  components={{
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    a: ({node, ...props}) => (
+                      <a {...props} target="_blank" rel="noopener noreferrer" />
+                    ),
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    code: ({ node, className, children, ...props }) => {
+
+                      // Properly extract text content from children
+                      const getText = (children: React.ReactNode): string => {
+                        if (typeof children === 'string') return children;
+                        if (Array.isArray(children)) {
+                          return children
+                            .map(child => typeof child === 'string' ? child : getText(child.props?.children))
+                            .join('');
+                        }
+                        return '';
+                      };
+
+                      const code = getText(children).replace(/\n$/, '');
+
+                      const inline = !className?.includes('language-');
+
+                      console.log({code, inline, node, className, children, props})
+                      
+                      // If the code block is a single line, don't show the copy button
+                      if (inline) {
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
+                      
+                      return (
+                        <div style={{ position: 'relative' }}>
+                          <div
+                            className="absolute top-0 right-0"
+                          >
+                            <CopyButton text={code} />
+                          </div>
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        </div>
+                      );
+                    },
+                  }}
+                >
                     {message.content}
                 </Markdown>
               </div>
