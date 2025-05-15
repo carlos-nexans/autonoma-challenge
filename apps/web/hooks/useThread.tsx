@@ -4,7 +4,7 @@ import { Thread } from "@repo/api"
 import { useQuery } from "@tanstack/react-query"
 
 export const useThread = function (id: string) {
-    const { data: thread, error, isLoading, refetch } = useQuery({
+    const { data: thread, error, isLoading } = useQuery({
         queryKey: ['thread', id],
         refetchOnMount: true,
         queryFn: async () => {
