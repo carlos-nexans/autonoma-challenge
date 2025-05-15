@@ -1,10 +1,10 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
+import { useNavigate } from "react-router"
 
 export const useThreads = function () {
-    const router = useRouter()
+    const navigate = useNavigate()
     const { data: threads = [], refetch } = useQuery({
         queryKey: ['threads'],
         staleTime: 5 * 1000,
@@ -51,7 +51,7 @@ export const useThreads = function () {
 
     const newThread = async function () {
         const thread = await addThread()
-        router.push(`/chat/${thread.id}`)
+        navigate(`/chat/${thread.id}`)
     }
 
     return {

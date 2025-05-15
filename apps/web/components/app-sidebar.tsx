@@ -19,8 +19,7 @@ import {
 import { Threads } from "@repo/api";
 import { useThreads } from "@/hooks/useThreads";
 import { Button } from "./ui/button";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { NavLink, useNavigate } from "react-router";
 
 export type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   currentThread?: string;
@@ -28,7 +27,7 @@ export type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typeof Sidebar> & AppSidebarProps) {
   const { threads, newThread, deleteThread } = useThreads();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleArchive = async (threadId: string) => {
     try {
@@ -44,14 +43,14 @@ export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typ
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
+              <NavLink to="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Bot className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Home</span>
                 </div>
-              </Link>
+              </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -81,7 +80,7 @@ export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typ
                     <SidebarMenuSubItem key={thread.id}>
                       <div className="flex items-center justify-between w-full">
                         <SidebarMenuSubButton asChild className="flex-1 block whitespace-normal break-words py-2 px-2 h-auto">
-                          <Link href={`/chat/${thread.id}`}>{thread.title}</Link>
+                          <NavLink to={`/chat/${thread.id}`}>{thread.title}</NavLink>
                         </SidebarMenuSubButton>
                         <Button
                           variant="ghost"
@@ -91,7 +90,7 @@ export function AppSidebar({ currentThread, ...props }: React.ComponentProps<typ
                             e.preventDefault();
                             handleArchive(thread.id);
                             if (thread.id === currentThread) {
-                              router.push("/");
+                              navigate("/");
                             }
                           }}
                         >

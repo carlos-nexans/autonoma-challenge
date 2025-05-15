@@ -12,7 +12,6 @@ export default function useChat({ thread, history = [] }: { thread?: string, his
     const { refetch: refetchThreads } = useThreads();
 
     const [threadId, setThreadId] = useState<string | undefined>(thread);
-
     const [messages, setMessages] = useState<UIMessage[]>(history);
     const [streaming, setStreaming] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
