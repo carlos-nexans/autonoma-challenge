@@ -2,33 +2,17 @@
 
 import { useEffect, useState } from "react"
 import { useIsFetching } from "@tanstack/react-query"
-import { usePathname, useSearchParams } from "next/navigation"
 
 export function TopProgressBar() {
   const isFetching = useIsFetching()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
   const [progress, setProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-  const [isRouteChanging, setIsRouteChanging] = useState(false)
-
-  // Navigation change detection
-  useEffect(() => {
-    setIsRouteChanging(true)
-    
-    // Reset route change status after a short delay
-    const timeoutId = setTimeout(() => {
-      setIsRouteChanging(false)
-    }, 100)
-
-    return () => clearTimeout(timeoutId)
-  }, [pathname, searchParams])
 
   useEffect(() => {
     let progressInterval: NodeJS.Timeout
     let timeoutId: NodeJS.Timeout
 
-    const shouldShowProgress = isFetching > 0 || isRouteChanging
+    const shouldShowProgress = isFetching > 0
 
     if (shouldShowProgress) {
       setIsVisible(true)
@@ -59,7 +43,7 @@ export function TopProgressBar() {
       clearInterval(progressInterval)
       clearTimeout(timeoutId)
     }
-  }, [isFetching, isRouteChanging])
+  }, [isFetching])
 
   if (!isVisible && progress === 0) {
     return null

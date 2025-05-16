@@ -13,7 +13,7 @@ import {
 import useChat, { UIMessage } from '@/hooks/useChat';
 import { cn } from '@/lib/utils';
 import { Message, SupportedModel, supportedModels } from '@repo/api';
-import { ArrowUp, Check, Copy } from 'lucide-react';
+import { ArrowUp, Check, Copy, Loader, LoaderCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import { useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
@@ -128,6 +128,8 @@ export default function ChatInterface({
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
     }
+    // Reset the textarea height state to default
+    setTextareaHeight(24);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -171,6 +173,11 @@ export default function ChatInterface({
                 </React.Fragment>
               ))}
             </span>
+          )}
+          {message.role === 'assistant' && !message.content && (
+            <>
+              <LoaderCircle className="h-5 w-5 animate-spin" />
+            </>
           )}
           {message.role === 'assistant' && message.content && (
             <>

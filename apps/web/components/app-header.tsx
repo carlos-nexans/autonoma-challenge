@@ -10,7 +10,7 @@ import {
 
 export default function AppHeader() {
   return (
-    <header className="flex h-16 shrink-0 items-center border-b bg-white sticky top-0 z-50">
+    <header className="flex h-16 shrink-0 items-center border-b bg-white/70 backdrop-blur-md sticky top-0 z-50">
       <div className="flex flex-row justify-between items-center px-3 w-full">
         <div className="flex flex-row gap-2 items-center">
           <SidebarTrigger />

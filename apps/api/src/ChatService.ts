@@ -50,14 +50,18 @@ export class ChatService {
             await this.threadService.addMessage(threadId, latestMessage);
         }
 
-        const completion = await this.openai.chat.completions.create({
+        const completion = await this.openai.responses.create({
             model: input.model || defaultModel,
-            messages: [
+            tools: [ { type: "web_search_preview" } ],
+            input: [
                 {
                     role: 'system',
                     content: systemPrompt,
                 },
-                ...input.messages
+                ...input.messages.map(m => ({
+                    role: m.role,
+                    content: m.content,
+                }))
             ],
             stream: true,
         });
@@ -65,26 +69,28 @@ export class ChatService {
         let id = undefined;
         let buffer = "";
         for await (const part of completion) {
-            if (part.id) {
-                id = part.id;
-            }
-            // emit chunks to the streaming endpoint
-            if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === null) {
-                const content = part.choices[0].delta.content || '';
-                buffer += content;
+            if (part.type === 'response.output_text.delta') {
+                const content = part.delta || '';
                 onEvent({
                     type: 'chunk',
                     content,
                 });
-                // emit end chunk
-            } else if (part.object === 'chat.completion.chunk' && part.choices[0].finish_reason === 'stop') {
-                const content = part.choices[0].delta.content || '';
-                buffer += content;
+            } else if (part.type === 'response.output_text.done') {
+                id = part.item_id;
+                buffer = part.text;
                 onEvent({
                     type: 'done',
-                    content,
+                    content: buffer,
                 });
+            } else if (part.type ==='response.completed') {
+                id = part.response.id;
             }
+
+            // TODO: implement web browsing item in the chat
+            // "response.web_search_call.in_progress",
+            // "response.web_search_call.searching",
+            // "response.web_search_call.completed",
+            // "response.output_item.done",
         }
 
         const result = await this.threadService.addMessage(threadId, {
