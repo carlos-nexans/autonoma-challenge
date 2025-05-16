@@ -33,7 +33,7 @@ const defaultModel = 'claude-3-5-haiku-latest';
 export class AnthropicChatService {
     constructor(private readonly anthropic: Anthropic, private readonly threadService: ThreadService) {}
 
-    async addMessage(input: AddMessageInput, onEvent: (event: StreamingEvent) => void): Promise<void> {
+    async* addMessage(input: AddMessageInput): AsyncGenerator<StreamingEvent> {
         let threadId = input.thread;
 
         // Create new thread if none is provided
@@ -41,10 +41,10 @@ export class AnthropicChatService {
             const thread = await this.threadService.createThread({ messages: input.messages });
             threadId = thread.id;
 
-            onEvent({
+            yield {
                 type: 'thread',
                 content: threadId,
-            });
+            }
         } else {
             const latestMessage = input.messages[input.messages.length - 1];
             await this.threadService.addMessage(threadId, latestMessage);
@@ -57,10 +57,10 @@ export class AnthropicChatService {
 
         const modelData = anthropicModels.find(m => m.key === input.model);
         if (!modelData) {
-            onEvent({
+            yield {
                 type: 'error',
                 content: 'Model not supported',
-            });
+            }
             return;
         }
 
@@ -71,6 +71,7 @@ export class AnthropicChatService {
             stream: true,
             // TODO: make configurable
             max_tokens: modelData.maxTokens,
+            tools: [{ type: 'web_search' }],
         });
 
         let id = undefined;
@@ -82,15 +83,15 @@ export class AnthropicChatService {
             } else if (part.type === 'content_block_delta') {
                 const content = part.delta.text || '';
                 buffer += content;
-                onEvent({
+                yield {
                     type: 'chunk',
                     content,
-                });
+                }
             } else if (part.type === 'message_stop') {
-                onEvent({
+                yield {
                     type: 'done',
                     content: '',
-                });
+                }
             }
         }
 
@@ -102,10 +103,10 @@ export class AnthropicChatService {
         });
 
         if (result.actions.includes('changed_title')) {
-            onEvent({
+            yield {
                 type: 'thread',
                 content: threadId,
-            });
+            }
         }
     }
 }
