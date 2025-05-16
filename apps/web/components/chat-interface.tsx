@@ -89,7 +89,8 @@ export default function ChatInterface({
 
   // Focus the textarea on component mount (only on desktop)
   useEffect(() => {
-    if (textareaRef.current && !isMobile) {
+    console.log(isMobile);
+    if (textareaRef.current && typeof isMobile !== 'undefined' && !isMobile) {
       textareaRef.current.focus();
     }
   }, [isMobile]);
@@ -300,96 +301,94 @@ export default function ChatInterface({
           <div className="h-full flex flex-col items-center justify-center">
             <h1
               className={cn(
-                'text-2xl font-semibold mb-8',
-                isMobile ? 'text-gray-500' : 'text-gray-900',
+                'text-2xl font-semibold mb-8 text-gray-500 sm:text-gray-900',
               )}
             >
               Start chatting
             </h1>
-            {!isMobile && (
-              <div className="w-full max-w-2xl">
-                <form onSubmit={handleSubmit} className="w-full">
-                  <div
-                    className={cn(
-                      'relative w-full rounded-3xl border border-gray-200 bg-white/70 backdrop-blur-sm p-3 cursor-text',
-                      loading && 'opacity-80',
-                    )}
-                  >
-                    <div className="pb-12">
-                      <Textarea
-                        ref={textareaRef}
-                        placeholder={
-                          loading ? 'Waiting for response...' : 'Ask Anything'
-                        }
-                        className="min-h-[24px] max-h-[320px] w-full rounded-3xl border-0 bg-transparent text-gray-900 placeholder:text-gray-400 placeholder:text-base focus-visible:ring-0 focus-visible:ring-offset-0 text-base pl-2 pr-4 pt-0 pb-0 resize-none overflow-y-auto leading-tight"
-                        value={inputValue}
-                        disabled={loading}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                      />
-                    </div>
+            <div className="hidden sm:block w-full max-w-2xl">
+              <form onSubmit={handleSubmit} className="w-full">
+                <div
+                  className={cn(
+                    'relative w-full rounded-3xl border border-gray-200 bg-white/70 backdrop-blur-sm p-3 cursor-text',
+                    loading && 'opacity-80',
+                  )}
+                >
+                  <div className="pb-12">
+                    <Textarea
+                      ref={textareaRef}
+                      placeholder={
+                        loading ? 'Waiting for response...' : 'Ask Anything'
+                      }
+                      className="min-h-[24px] max-h-[320px] w-full rounded-3xl border-0 bg-transparent text-gray-900 placeholder:text-gray-400 placeholder:text-base focus-visible:ring-0 focus-visible:ring-offset-0 text-base pl-2 pr-4 pt-0 pb-0 resize-none overflow-y-auto leading-tight"
+                      value={inputValue}
+                      disabled={loading}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                  </div>
 
-                    <div className="absolute bottom-3 left-3 right-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <Select
-                            value={selectedModel}
-                            onValueChange={(value) =>
-                              setSelectedModel(value as SupportedModel)
-                            }
-                            disabled={loading}
-                          >
-                            <SelectTrigger className="h-8 text-sm bg-transparent focus:ring-0">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {supportedModels.map((model) => (
-                                  <SelectItem key={model.key} value={model.key}>
-                                    <span>{model.displayName}</span>
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        <Button
-                          type="submit"
-                          variant="outline"
-                          size="icon"
-                          className={cn(
-                            'rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200',
-                            hasTyped
-                              ? 'bg-black scale-110 hover:bg-slate-900 cursor-pointer'
-                              : 'bg-gray-200',
-                          )}
-                          disabled={!inputValue.trim() || loading}
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Select
+                          value={selectedModel}
+                          onValueChange={(value) =>
+                            setSelectedModel(value as SupportedModel)
+                          }
+                          disabled={loading}
                         >
-                          <ArrowUp
-                            className={cn(
-                              'h-4 w-4 transition-colors',
-                              hasTyped ? 'text-white' : 'text-gray-500',
-                            )}
-                          />
-                          <span className="sr-only">Submit</span>
-                        </Button>
+                          <SelectTrigger className="h-8 text-sm bg-transparent focus:ring-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {supportedModels.map((model) => (
+                                <SelectItem key={model.key} value={model.key}>
+                                  <span>{model.displayName}</span>
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </div>
+
+                      <Button
+                        type="submit"
+                        variant="outline"
+                        size="icon"
+                        className={cn(
+                          'rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200',
+                          hasTyped
+                            ? 'bg-black scale-110 hover:bg-slate-900 cursor-pointer'
+                            : 'bg-gray-200',
+                        )}
+                        disabled={!inputValue.trim() || loading}
+                      >
+                        <ArrowUp
+                          className={cn(
+                            'h-4 w-4 transition-colors',
+                            hasTyped ? 'text-white' : 'text-gray-500',
+                          )}
+                        />
+                        <span className="sr-only">Submit</span>
+                      </Button>
                     </div>
                   </div>
-                </form>
-              </div>
-            )}
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>
 
       {/* Text area */}
-      {(messages.length > 0 || isMobile) && (
+      
         <div
           className={cn(
             'fixed bottom-0 left-0 right-0 p-4',
             !isMobile && sidebarState === 'expanded' ? 'pl-[17rem]' : '',
+            messages.length > 0 || isMobile ? '' : 'hidden'
           )}
         >
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto ">
@@ -464,7 +463,7 @@ export default function ChatInterface({
             </div>
           </form>
         </div>
-      )}
+
     </div>
   );
 }
